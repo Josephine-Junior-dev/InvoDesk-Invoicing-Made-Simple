@@ -1,70 +1,10 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#14213d">
-  <meta name="description" content="InvoDesk helps freelancers and small businesses create professional invoices, track payments, and issue receipts.">
-  <title>InvoDesk — Invoicing Made Simple</title>
-  <link rel="stylesheet" href="styles.css?v=202610271205">
-</head>
-<body>
-  <div class="app-shell">
-    <aside class="sidebar" id="sidebar">
-      <a class="brand" href="#" aria-label="InvoDesk home"><span class="brand-mark">ID</span><span><strong>InvoDesk</strong><small>INVOICING MADE SIMPLE</small></span></a>
-      <div class="workspace-label">WORKSPACE</div>
-      <nav class="side-nav" aria-label="Main navigation">
-        <button class="nav-item active" data-view="dashboard"><span>▦</span> Dashboard</button>
-        <button class="nav-item" data-view="invoices"><span>▤</span> Invoices <b id="navInvoiceCount">0</b></button>
-        <button class="nav-item" data-view="receipts"><span>▧</span> Receipts</button>
-        <button class="nav-item" data-view="customers"><span>♙</span> Customers</button>
-      </nav>
-      <div class="sidebar-bottom">
-        <div class="help-card"><span class="help-icon">✦</span><strong>Keep business moving</strong><p>Create clear invoices and keep payment records in one place.</p><button data-action="new-invoice" class="help-link">Create an invoice ↗</button></div>
-        <div class="sidebar-foot"><span class="status-dot"></span> InvoDesk Starter <span class="version">V1.0</span></div>
-      </div>
-    </aside>
-    <main class="main-area">
-      <header class="topbar">
-        <button class="mobile-menu" id="mobileMenu" aria-label="Toggle navigation">☰</button>
-        <div class="breadcrumb">Workspace <span>/</span> <strong id="pageCrumb">Dashboard</strong></div>
-        <div class="top-actions"><span class="secure-label"><span>●</span> Workspace profile</span><button class="avatar" data-action="business-profile" title="Edit business profile" aria-label="Edit business profile">ID</button></div>
-      </header>
-      <div class="content">
-        <section class="view active" id="view-dashboard">
-          <div class="page-heading"><div><p class="eyebrow">YOUR BUSINESS AT A GLANCE</p><h1>Good business starts here.</h1><p class="subheading">Create invoices, record payments and keep everything organised.</p></div><button class="btn btn-primary" data-action="new-invoice"><span>＋</span> New invoice</button></div>
-          <div class="notice"><span class="notice-icon">✦</span><div><strong>Welcome to InvoDesk</strong><p>Your simple workspace for invoices and receipts. Add your first invoice to get started.</p></div><button class="notice-close" id="dismissNotice" aria-label="Dismiss notice">×</button></div>
-          <div class="stats-grid">
-            <article class="stat-card"><div class="stat-top"><span>Total invoiced</span><span class="stat-icon blue">▤</span></div><strong id="statInvoiced">$0.00</strong><small>Across all saved invoices</small></article>
-            <article class="stat-card"><div class="stat-top"><span>Payments received</span><span class="stat-icon green">↙</span></div><strong id="statPaid">$0.00</strong><small>Payments recorded</small></article>
-            <article class="stat-card"><div class="stat-top"><span>Outstanding</span><span class="stat-icon amber">◷</span></div><strong id="statOutstanding">$0.00</strong><small>Balance still due</small></article>
-            <article class="stat-card"><div class="stat-top"><span>Invoices</span><span class="stat-icon violet">▧</span></div><strong id="statCount">0</strong><small><span id="statOverdue">0 overdue</span></small></article>
-          </div>
-          <div class="dashboard-grid">
-            <section class="panel recent-panel"><div class="panel-heading"><div><h2>Recent invoices</h2><p>Your latest billing activity</p></div><button class="text-button" data-view="invoices">View all →</button></div><div id="recentInvoices" class="table-wrap"><div class="empty-state"><span class="empty-icon">▤</span><strong>No invoices yet</strong><p>Your invoices will appear here when you create them.</p><button class="btn btn-primary btn-small" data-action="new-invoice">Create first invoice</button></div></div></section>
-            <section class="panel quick-panel"><div class="panel-heading"><div><h2>Quick actions</h2><p>Get things done faster</p></div></div><button class="quick-action" data-action="new-invoice"><span class="quick-icon blue">＋</span><span><strong>Create an invoice</strong><small>Bill a customer for your work</small></span><b>›</b></button><button class="quick-action" data-action="new-customer"><span class="quick-icon purple">♙</span><span><strong>Add a customer</strong><small>Save customer contact details</small></span><b>›</b></button><button class="quick-action" data-view="receipts"><span class="quick-icon green">▧</span><span><strong>View receipts</strong><small>Review recorded payments</small></span><b>›</b></button><div class="tip-box"><span>✦</span><p><strong>Small tip</strong><br>Record payments against invoices to keep outstanding balances up to date.</p></div></section>
-          </div>
-          <p class="disclaimer">Starter preview · Your records are saved in this browser on this device. Cloud accounts and syncing are not enabled yet.</p>
-        </section>
-        <section class="view" id="view-invoices">
-          <div class="page-heading"><div><p class="eyebrow">BILLING</p><h1>Invoices</h1><p class="subheading">Create and manage customer invoices.</p></div><button class="btn btn-primary" data-action="new-invoice">＋ New invoice</button></div>
-          <section class="panel"><div class="list-toolbar"><div class="searchbox"><span>⌕</span><input id="invoiceSearch" type="search" placeholder="Search invoice or customer..." aria-label="Search invoices"></div><select id="invoiceFilter" aria-label="Filter invoices"><option value="all">All statuses</option><option value="Draft">Draft</option><option value="Unpaid">Unpaid</option><option value="Partial">Partially paid</option><option value="Paid">Paid</option><option value="Overdue">Overdue</option></select></div><div id="invoiceTable" class="table-wrap"></div></section>
-        </section>
-        <section class="view" id="view-receipts">
-          <div class="page-heading"><div><p class="eyebrow">PAYMENT RECORDS</p><h1>Receipts</h1><p class="subheading">Every recorded payment has a receipt you can print or save as PDF.</p></div></div>
-          <section class="panel"><div class="list-toolbar"><div class="searchbox"><span>⌕</span><input id="receiptSearch" type="search" placeholder="Search receipt or customer..." aria-label="Search receipts"></div></div><div id="receiptTable" class="table-wrap"></div></section>
-        </section>
-        <section class="view" id="view-customers">
-          <div class="page-heading"><div><p class="eyebrow">YOUR CONTACTS</p><h1>Customers</h1><p class="subheading">Keep customer details ready for your next invoice.</p></div><button class="btn btn-primary" data-action="new-customer">＋ Add customer</button></div>
-          <section class="panel"><div class="list-toolbar"><div class="searchbox"><span>⌕</span><input id="customerSearch" type="search" placeholder="Search customers..." aria-label="Search customers"></div></div><div id="customerTable" class="table-wrap"></div></section>
-        </section>
-      </div>
-    </main>
-  </div>
-  <div class="modal-backdrop" id="modalBackdrop" hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-header"><div><p class="eyebrow">IN VODESK WORKSPACE</p><h2 id="modalTitle">New invoice</h2></div><button class="icon-button" id="closeModal" aria-label="Close">×</button></div><div id="modalBody"></div></section></div>
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js?v=202610271205"></script>
-  <script src="app.js?v=202610271205"></script>
-</body>
-</html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#14213d"><title>InvoiceGenerator</title><meta name="description" content="Create and save invoices securely with InvoiceGenerator."><link rel="stylesheet" href="styles.css?v=ig2"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js?v=ig2"></script><script defer src="app.js?v=ig2"></script></head><body>
+<div id="boot" class="boot"><div class="logo">IG</div><h1>InvoiceGenerator</h1><p>Starting secure workspace…</p></div>
+<section id="auth" class="auth hidden"><form id="authForm" class="auth-card"><div class="logo">IG</div><p class="eyebrow">SMART BILLING WORKSPACE</p><h1 id="authTitle">Welcome back</h1><p class="muted">Sign in to access your cloud-saved invoices.</p><label>Email address<input id="email" type="email" autocomplete="email" required placeholder="you@example.com"></label><label>Password<input id="password" type="password" minlength="6" required autocomplete="current-password" placeholder="At least 6 characters"></label><button id="authSubmit" class="btn primary full">Sign in</button><p id="authMessage" class="message"></p><button type="button" id="authToggle" class="text-btn full">Create a new account</button><small class="muted">Your records are private to your signed-in account.</small></form></section>
+<div id="app" class="shell hidden"><aside id="sidebar" class="sidebar"><a class="brand" href="#" data-view="dashboard"><span class="logo">IG</span><span><b>InvoiceGenerator</b><small>INVOICING MADE SIMPLE</small></span></a><p class="nav-label">WORKSPACE</p><nav><button class="nav active" data-view="dashboard">▦ <span>Dashboard</span></button><button class="nav" data-view="invoices">▤ <span>Invoices</span><b id="navCount">0</b></button><button class="nav" data-view="customers">♙ <span>Customers</span></button><button class="nav" data-view="settings">⚙ <span>Business profile</span></button></nav><div class="side-bottom"><div class="help"><b>Ready to bill?</b><p>Create a professional invoice, then print or save it as PDF.</p><button class="text-btn" data-action="new-invoice">＋ New invoice</button></div><small>● Supabase cloud storage</small></div></aside>
+<main><header class="topbar"><button id="mobileMenu" class="mobile-menu">☰</button><div class="crumb">Workspace <span>/</span> <b id="pageTitle">Dashboard</b></div><div class="userbar"><span id="userEmail"></span><button id="signOut" class="btn light small">Sign out</button></div></header><div class="content">
+<section id="view-dashboard" class="view active"><div class="heading"><div><p class="eyebrow">YOUR BUSINESS AT A GLANCE</p><h1>Invoice dashboard</h1><p class="muted">Your invoices are saved to Supabase cloud storage.</p></div><button class="btn primary" data-action="new-invoice">＋ New invoice</button></div><div class="stats"><article><span>Total invoiced</span><strong id="statTotal">KSh 0.00</strong><small>All saved invoices</small></article><article><span>Paid invoices</span><strong id="statPaid">0</strong><small>Fully paid</small></article><article><span>Outstanding</span><strong id="statOutstanding">KSh 0.00</strong><small>Balance due</small></article><article><span>Invoices</span><strong id="statCount">0</strong><small id="statDraft">0 drafts</small></article></div><section class="panel"><div class="panel-head"><div><h2>Recent invoices</h2><p>Latest saved documents</p></div><button class="text-btn" data-view="invoices">View all →</button></div><div id="recentList" class="table-wrap"></div></section></section>
+<section id="view-invoices" class="view"><div class="heading"><div><p class="eyebrow">BILLING</p><h1>Invoices</h1><p class="muted">Create, edit, search and print invoices.</p></div><button class="btn primary" data-action="new-invoice">＋ New invoice</button></div><div class="toolbar"><input id="invoiceSearch" placeholder="Search invoice or customer…"><select id="invoiceFilter"><option value="all">All statuses</option><option>Draft</option><option>Unpaid</option><option>Paid</option></select></div><div class="panel"><div id="invoiceList" class="table-wrap"></div></div></section>
+<section id="view-customers" class="view"><div class="heading"><div><p class="eyebrow">ADDRESS BOOK</p><h1>Customers</h1><p class="muted">Save customer details for faster invoicing.</p></div><button class="btn primary" data-action="new-customer">＋ Add customer</button></div><div class="toolbar"><input id="customerSearch" placeholder="Search customers…"></div><div class="panel"><div id="customerList" class="table-wrap"></div></div></section>
+<section id="view-settings" class="view"><div class="heading"><div><p class="eyebrow">YOUR BRAND</p><h1>Business profile</h1><p class="muted">These details appear on your invoices.</p></div></div><div class="panel form-panel"><form id="businessForm" class="form-grid"><label>Business name<input id="bizName" required></label><label>Business email<input id="bizEmail" type="email"></label><label>Phone number<input id="bizPhone"></label><label>Invoice prefix<input id="bizPrefix" required maxlength="12" placeholder="INV"></label><label class="wide">Business address<textarea id="bizAddress" rows="3"></textarea></label><button class="btn primary wide">Save business profile</button></form></div></section>
+</div></main></div><div id="modalRoot"></div><div id="toast" class="toast"></div></body></html>
