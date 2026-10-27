@@ -54,10 +54,40 @@ END $$;
 
 create table if not exists public.ig_invoice_items (
  id uuid primary key default gen_random_uuid(), owner_id uuid not null references auth.users(id) on delete cascade,
- invoice_id uuid not null references public.ig_invoices(id) on delete cascade, description text not null,
+ invoice_id uuid not null, description text not null,
  quantity numeric(12,3) not null check(quantity>0), unit_price numeric(12,2) not null default 0 check(unit_price>=0),
- line_total numeric(12,2) not null default 0, created_at timestamptz not null default now(), foreign key(owner_id,invoice_id) references public.ig_invoices(owner_id,id) on delete cascade
+ line_total numeric(12,2) not null default 0, created_at timestamptz not null default now(), constraint ig_invoice_items_invoice_owner_fkey foreign key(owner_id,invoice_id) references public.ig_invoices(owner_id,id) on delete cascade
 );
+
+-- Repair invoice-item relationships too: keep ONE relationship to invoices.
+DO $
+DECLARE
+ c RECORD;
+BEGIN
+ IF to_regclass('public.ig_invoice_items') IS NOT NULL THEN
+  FOR c IN
+   SELECT con.conname
+   FROM pg_constraint con
+   JOIN pg_class src ON src.oid = con.conrelid
+   JOIN pg_namespace ns ON ns.oid = src.relnamespace
+   JOIN pg_class dst ON dst.oid = con.confrelid
+   JOIN pg_namespace dns ON dns.oid = dst.relnamespace
+   WHERE ns.nspname = 'public'
+     AND src.relname = 'ig_invoice_items'
+     AND dns.nspname = 'public'
+     AND dst.relname = 'ig_invoices'
+     AND con.contype = 'f'
+  LOOP
+   EXECUTE format('ALTER TABLE public.ig_invoice_items DROP CONSTRAINT %I', c.conname);
+  END LOOP;
+  ALTER TABLE public.ig_invoice_items
+   ADD CONSTRAINT ig_invoice_items_invoice_owner_fkey
+   FOREIGN KEY (owner_id, invoice_id)
+   REFERENCES public.ig_invoices(owner_id, id)
+   ON DELETE CASCADE;
+ END IF;
+END $;
+
 create index if not exists ig_customers_owner_idx on public.ig_customers(owner_id);
 create index if not exists ig_invoices_owner_created_idx on public.ig_invoices(owner_id,created_at desc);
 create index if not exists ig_items_invoice_idx on public.ig_invoice_items(invoice_id);
