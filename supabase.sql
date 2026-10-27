@@ -60,7 +60,7 @@ create table if not exists public.ig_invoice_items (
 );
 
 -- Repair invoice-item relationships too: keep ONE relationship to invoices.
-DO $
+DO $$
 DECLARE
  c RECORD;
 BEGIN
@@ -86,7 +86,7 @@ BEGIN
    REFERENCES public.ig_invoices(owner_id, id)
    ON DELETE CASCADE;
  END IF;
-END $;
+END $$;
 
 create index if not exists ig_customers_owner_idx on public.ig_customers(owner_id);
 create index if not exists ig_invoices_owner_created_idx on public.ig_invoices(owner_id,created_at desc);
