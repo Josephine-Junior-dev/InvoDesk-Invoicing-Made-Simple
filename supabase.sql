@@ -8,7 +8,7 @@ create table if not exists public.ig_businesses (
 );
 create table if not exists public.ig_customers (
  id uuid primary key default gen_random_uuid(), owner_id uuid not null references auth.users(id) on delete cascade,
- name text not null, email text, phone text, address text, created_at timestamptz not null default now(), updated_at timestamptz not null default now()
+ name text not null, email text, phone text, address text, created_at timestamptz not null default now(), updated_at timestamptz not null default now(), unique(owner_id,id)
 );
 create table if not exists public.ig_invoices (
  id uuid primary key default gen_random_uuid(), owner_id uuid not null references auth.users(id) on delete cascade,
@@ -19,13 +19,13 @@ create table if not exists public.ig_invoices (
  discount numeric(12,2) not null default 0 check(discount>=0), tax_rate numeric(7,3) not null default 0 check(tax_rate>=0 and tax_rate<=100),
  subtotal numeric(12,2) not null default 0 check(subtotal>=0), total numeric(12,2) not null default 0 check(total>=0),
  amount_paid numeric(12,2) not null default 0 check(amount_paid>=0), notes text, terms text,
- created_at timestamptz not null default now(), updated_at timestamptz not null default now(), unique(business_id,invoice_number)
+ created_at timestamptz not null default now(), updated_at timestamptz not null default now(), unique(business_id,invoice_number), unique(owner_id,id), foreign key(owner_id,customer_id) references public.ig_customers(owner_id,id)
 );
 create table if not exists public.ig_invoice_items (
  id uuid primary key default gen_random_uuid(), owner_id uuid not null references auth.users(id) on delete cascade,
  invoice_id uuid not null references public.ig_invoices(id) on delete cascade, description text not null,
  quantity numeric(12,3) not null check(quantity>0), unit_price numeric(12,2) not null default 0 check(unit_price>=0),
- line_total numeric(12,2) not null default 0, created_at timestamptz not null default now()
+ line_total numeric(12,2) not null default 0, created_at timestamptz not null default now(), foreign key(owner_id,invoice_id) references public.ig_invoices(owner_id,id) on delete cascade
 );
 create index if not exists ig_customers_owner_idx on public.ig_customers(owner_id);
 create index if not exists ig_invoices_owner_created_idx on public.ig_invoices(owner_id,created_at desc);
