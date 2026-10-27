@@ -20,7 +20,7 @@
         <button class="nav-item" data-view="customers"><span>♙</span> Customers</button>
       </nav>
       <div class="sidebar-bottom">
-        <div class="help-card"><span class="help-icon">✦</span><strong>Keep business moving</strong><p>Create clear invoices and keep payment records in one place.</p><button data-view="invoices" class="help-link">Create an invoice ↗</button></div>
+        <div class="help-card"><span class="help-icon">✦</span><strong>Keep business moving</strong><p>Create clear invoices and keep payment records in one place.</p><button data-action="new-invoice" class="help-link">Create an invoice ↗</button></div>
         <div class="sidebar-foot"><span class="status-dot"></span> InvoDesk Starter <span class="version">V1.0</span></div>
       </div>
     </aside>
@@ -28,7 +28,7 @@
       <header class="topbar">
         <button class="mobile-menu" id="mobileMenu" aria-label="Toggle navigation">☰</button>
         <div class="breadcrumb">Workspace <span>/</span> <strong id="pageCrumb">Dashboard</strong></div>
-        <div class="top-actions"><span class="secure-label"><span>●</span> Local workspace</span><button class="avatar" title="Workspace profile">ID</button></div>
+        <div class="top-actions"><span class="secure-label"><span>●</span> Workspace profile</span><button class="avatar" data-action="business-profile" title="Edit business profile" aria-label="Edit business profile">ID</button></div>
       </header>
       <div class="content">
         <section class="view active" id="view-dashboard">
