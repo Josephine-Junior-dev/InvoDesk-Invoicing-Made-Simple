@@ -66,3 +66,48 @@ begin
 end $$;
 revoke all on function public.ig_create_invoice(uuid,date,date,text,numeric,numeric,text,text,jsonb) from public,anon;
 grant execute on function public.ig_create_invoice(uuid,date,date,text,numeric,numeric,text,text,jsonb) to authenticated;
+
+-- Dedicated payment and receipt tables for InvoiceGenerator.
+-- These are separate from any existing InvoDesk or garage tables.
+create table if not exists public.ig_payments (
+ id uuid primary key default gen_random_uuid(),
+ owner_id uuid not null references auth.users(id) on delete cascade,
+ invoice_id uuid not null,
+ amount numeric(12,2) not null check(amount>0),
+ payment_date date not null default current_date,
+ payment_method text,
+ reference text,
+ notes text,
+ created_at timestamptz not null default now(),
+ foreign key(owner_id,invoice_id) references public.ig_invoices(owner_id,id) on delete cascade,
+ unique(owner_id,id)
+);
+create index if not exists ig_payments_owner_invoice_idx on public.ig_payments(owner_id,invoice_id);
+
+create table if not exists public.ig_receipts (
+ id uuid primary key default gen_random_uuid(),
+ owner_id uuid not null references auth.users(id) on delete cascade,
+ payment_id uuid not null,
+ receipt_number text not null,
+ issued_at timestamptz not null default now(),
+ notes text,
+ created_at timestamptz not null default now(),
+ unique(owner_id,receipt_number),
+ foreign key(owner_id,payment_id) references public.ig_payments(owner_id,id) on delete cascade
+);
+create index if not exists ig_receipts_owner_issued_idx on public.ig_receipts(owner_id,issued_at desc);
+
+alter table public.ig_payments enable row level security;
+alter table public.ig_receipts enable row level security;
+
+drop policy if exists ig_payments_owner on public.ig_payments;
+create policy ig_payments_owner on public.ig_payments
+ for all to authenticated using(owner_id=(select auth.uid()))
+ with check(owner_id=(select auth.uid()));
+
+drop policy if exists ig_receipts_owner on public.ig_receipts;
+create policy ig_receipts_owner on public.ig_receipts
+ for all to authenticated using(owner_id=(select auth.uid()))
+ with check(owner_id=(select auth.uid()));
+
+grant select,insert,update,delete on public.ig_payments,public.ig_receipts to authenticated;
