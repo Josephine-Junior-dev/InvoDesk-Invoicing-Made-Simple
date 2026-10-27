@@ -24,7 +24,7 @@ create table if not exists public.ig_invoices (
 
 -- Repair existing installations: keep ONE customer relationship only.
 -- The composite foreign key also guarantees the customer belongs to the invoice owner.
-do $
+DO $
 declare
  c record;
 begin
@@ -50,7 +50,7 @@ begin
    references public.ig_customers(owner_id, id)
    on delete set null (customer_id);
  end if;
-end $;
+END $;
 
 create table if not exists public.ig_invoice_items (
  id uuid primary key default gen_random_uuid(), owner_id uuid not null references auth.users(id) on delete cascade,
