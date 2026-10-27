@@ -13,14 +13,45 @@ create table if not exists public.ig_customers (
 create table if not exists public.ig_invoices (
  id uuid primary key default gen_random_uuid(), owner_id uuid not null references auth.users(id) on delete cascade,
  business_id uuid not null references public.ig_businesses(id) on delete restrict,
- customer_id uuid references public.ig_customers(id) on delete set null, invoice_number text not null,
+ customer_id uuid, invoice_number text not null,
  invoice_date date not null default current_date, due_date date, currency text not null default 'KES',
  status text not null default 'Unpaid' check(status in ('Draft','Unpaid','Paid')),
  discount numeric(12,2) not null default 0 check(discount>=0), tax_rate numeric(7,3) not null default 0 check(tax_rate>=0 and tax_rate<=100),
  subtotal numeric(12,2) not null default 0 check(subtotal>=0), total numeric(12,2) not null default 0 check(total>=0),
  amount_paid numeric(12,2) not null default 0 check(amount_paid>=0), notes text, terms text,
- created_at timestamptz not null default now(), updated_at timestamptz not null default now(), unique(business_id,invoice_number), unique(owner_id,id), foreign key(owner_id,customer_id) references public.ig_customers(owner_id,id)
+ created_at timestamptz not null default now(), updated_at timestamptz not null default now(), unique(business_id,invoice_number), unique(owner_id,id), constraint ig_invoices_customer_owner_fkey foreign key(owner_id,customer_id) references public.ig_customers(owner_id,id) on delete set null (customer_id)
 );
+
+-- Repair existing installations: keep ONE customer relationship only.
+-- The composite foreign key also guarantees the customer belongs to the invoice owner.
+do $
+declare
+ c record;
+begin
+ if to_regclass('public.ig_invoices') is not null then
+  for c in
+   select con.conname
+   from pg_constraint con
+   join pg_class src on src.oid = con.conrelid
+   join pg_namespace ns on ns.oid = src.relnamespace
+   join pg_class dst on dst.oid = con.confrelid
+   join pg_namespace dns on dns.oid = dst.relnamespace
+   where ns.nspname = 'public'
+     and src.relname = 'ig_invoices'
+     and dns.nspname = 'public'
+     and dst.relname = 'ig_customers'
+     and con.contype = 'f'
+  loop
+   execute format('alter table public.ig_invoices drop constraint %I', c.conname);
+  end loop;
+  alter table public.ig_invoices
+   add constraint ig_invoices_customer_owner_fkey
+   foreign key (owner_id, customer_id)
+   references public.ig_customers(owner_id, id)
+   on delete set null (customer_id);
+ end if;
+end $;
+
 create table if not exists public.ig_invoice_items (
  id uuid primary key default gen_random_uuid(), owner_id uuid not null references auth.users(id) on delete cascade,
  invoice_id uuid not null references public.ig_invoices(id) on delete cascade, description text not null,
