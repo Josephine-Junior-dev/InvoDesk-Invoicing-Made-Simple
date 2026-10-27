@@ -39,3 +39,37 @@ input,select,textarea{border-color:#dfe5ef;border-radius:11px;transition:border-
 .print-doc.template-startup .doc-head{border-bottom:4px solid #2878d4}.print-doc.template-startup .doc-head h1{color:#2878d4}.print-doc.template-startup table th{background:#eaf4ff}
 .print-doc.template-slate .doc-head{border-bottom:3px solid #64748b}.print-doc.template-slate .doc-head h1{color:#475569}.print-doc.template-slate table th{background:#eef1f4}
 @media print{.print-doc.template-midnight .doc-head{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+
+
+/* Live invoice template preview */
+.live-template-preview{margin:4px 0 22px;border:1px solid #dfe5ef;border-radius:15px;overflow:hidden;background:#f7f9fd}
+.live-preview-top{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:10px 14px;background:#eef2f9;color:#66738a;font-size:10px;letter-spacing:.08em;font-weight:800}
+.live-preview-top b{letter-spacing:0;font-size:11px;color:#17223b}
+.live-preview-paper{background:#fff;padding:18px;min-height:190px}
+.live-preview-head{display:flex;justify-content:space-between;gap:15px;padding-bottom:13px;border-bottom:3px solid #315efb}
+.live-preview-brand{font-size:10px;font-weight:800;letter-spacing:.06em;color:#315efb}
+.live-preview-head h3{font-size:20px;margin:7px 0 4px;color:#315efb}
+.live-preview-head small,.live-preview-customer span{font-size:10px;color:#738099}
+.live-preview-number{text-align:right;font-size:9px;color:#738099;letter-spacing:.08em}
+.live-preview-number b{font-size:12px;color:#17223b;letter-spacing:0}
+.live-preview-customer{display:flex;flex-direction:column;gap:4px;margin:15px 0;font-size:11px}
+.live-preview-customer small{font-size:9px;color:#738099;letter-spacing:.08em}
+.live-preview-lines>div{display:flex;justify-content:space-between;gap:12px;padding:7px 8px;border-bottom:1px solid #edf0f6;font-size:10px}
+.live-preview-lines>div:first-child{background:#f5f7fb;font-size:9px;text-transform:uppercase;color:#68758a}
+.live-preview-lines>small{display:block;padding:6px;color:#738099;font-size:9px}
+.live-preview-total{display:flex;justify-content:space-between;align-items:center;margin:12px 0 0 auto;padding:10px 12px;max-width:230px;background:#f4f6fb;font-size:10px;font-weight:800}
+.live-preview-total b{font-size:14px;color:#315efb}
+.live-template-preview.template-corporate .live-preview-head{border-color:#14213d}.live-template-preview.template-corporate .live-preview-brand,.live-template-preview.template-corporate .live-preview-head h3{color:#14213d}
+.live-template-preview.template-minimal .live-preview-head{border-bottom:1px solid #b9c0cb}.live-template-preview.template-minimal .live-preview-head h3{font-weight:400;color:#303846}.live-template-preview.template-minimal .live-preview-brand{color:#303846}
+.live-template-preview.template-classic .live-preview-head{border-bottom:3px double #a68b60}.live-template-preview.template-classic .live-preview-head h3{font-family:Georgia,serif;color:#84663c}.live-template-preview.template-classic .live-preview-brand{color:#84663c}
+.live-template-preview.template-retail .live-preview-head{border-color:#087f70}.live-template-preview.template-retail .live-preview-head h3,.live-template-preview.template-retail .live-preview-brand{color:#087f70}.live-template-preview.template-retail .live-preview-lines>div:first-child{background:#e5f6f2}
+.live-template-preview.template-elegant .live-preview-head{border-color:#6e3e7d}.live-template-preview.template-elegant .live-preview-head h3{font-family:Georgia,serif;color:#6e3e7d}.live-template-preview.template-elegant .live-preview-brand{color:#6e3e7d}
+.live-template-preview.template-creative .live-preview-head{border-width:5px;border-color:#e05d43}.live-template-preview.template-creative .live-preview-head h3,.live-template-preview.template-creative .live-preview-brand{color:#e05d43}
+.live-template-preview.template-international .live-preview-head{border-color:#137a67}.live-template-preview.template-international .live-preview-head h3,.live-template-preview.template-international .live-preview-brand{color:#137a67}
+.live-template-preview.template-midnight .live-preview-paper{background:#172033;color:#f1f5f9}.live-template-preview.template-midnight .live-preview-head{background:#172033;border-color:#4e8cff}.live-template-preview.template-midnight .live-preview-head h3,.live-template-preview.template-midnight .live-preview-brand{color:#8bb6ff}.live-template-preview.template-midnight .live-preview-number b{color:#fff}.live-template-preview.template-midnight .live-preview-lines>div{border-color:#344158}.live-template-preview.template-midnight .live-preview-lines>div:first-child{background:#29364d;color:#fff}.live-template-preview.template-midnight .live-preview-total{background:#29364d}.live-template-preview.template-midnight .live-preview-total b{color:#8bb6ff}
+.live-template-preview.template-emerald .live-preview-head{border-color:#167653}.live-template-preview.template-emerald .live-preview-head h3,.live-template-preview.template-emerald .live-preview-brand{color:#167653}.live-template-preview.template-emerald .live-preview-total b{color:#167653}
+.live-template-preview.template-luxe .live-preview-head{border-bottom:3px double #a77a2d}.live-template-preview.template-luxe .live-preview-head h3{font-family:Georgia,serif;color:#946a22}.live-template-preview.template-luxe .live-preview-brand{color:#946a22}.live-template-preview.template-luxe .live-preview-total b{color:#946a22}
+.live-template-preview.template-violet .live-preview-head{border-color:#6d4aff}.live-template-preview.template-violet .live-preview-head h3,.live-template-preview.template-violet .live-preview-brand{color:#6d4aff}.live-template-preview.template-violet .live-preview-total b{color:#6d4aff}
+.live-template-preview.template-startup .live-preview-head{border-width:4px;border-color:#2878d4}.live-template-preview.template-startup .live-preview-head h3,.live-template-preview.template-startup .live-preview-brand{color:#2878d4}
+.live-template-preview.template-slate .live-preview-head{border-color:#64748b}.live-template-preview.template-slate .live-preview-head h3,.live-template-preview.template-slate .live-preview-brand{color:#475569}.live-template-preview.template-slate .live-preview-total b{color:#475569}
+@media(max-width:480px){.live-preview-paper{padding:13px}.live-preview-head h3{font-size:17px}.live-preview-total{max-width:190px}}
